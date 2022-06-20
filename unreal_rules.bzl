@@ -1,7 +1,10 @@
 def _build_game_impl(ctx):
+
     out = ctx.actions.declare_file("out.txt")
 
-    ctx.actions.run(outputs=[out], executable=attr.file._setup_file, arguments=[""])
+    ctx.actions.run(
+        outputs=[out], executable=attr.executables.build_tool, arguments=[""]
+    )
 
     return DefaultInfo(files=depset([out]), executable=out)
 
