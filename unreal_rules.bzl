@@ -1,0 +1,16 @@
+def _build_game_impl(ctx):
+    out = ctx.actions.declare_file("out.txt")
+
+    ctx.actions.run(outputs=[out], executable=attr.file._setup_file, arguments=[""])
+
+    return DefaultInfo(files=depset([out]), executable=out)
+
+
+build_game = rule(
+    implementation=_build_game_impl,
+    attrs={
+        "build_tool": attr.label(allow_single_file=True, executable=True, cfg="exec"),
+        "unreal_engine": attr.label(),
+        "unreal_project": attr.label(),
+    },
+)
