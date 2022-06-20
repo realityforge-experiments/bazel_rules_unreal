@@ -9,7 +9,7 @@ def _build_game_impl(ctx):
 build_game = rule(
     implementation=_build_game_impl,
     attrs={
-        "build_tool": attr.label(allow_single_file=True, executable=True, cfg="exec"),
+        "build_tool": attr.label(executable=True, cfg="exec"),
         "unreal_engine": attr.label(),
         "unreal_project": attr.label(),
     },
