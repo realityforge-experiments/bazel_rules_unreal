@@ -2,14 +2,27 @@ import sys
 import pathlib
 import copy
 import subprocess
+import os
 
-engine_root = sys.argv[1]
+run_uat_tool = sys.argv[1]
+run_uat_tool = pathlib.Path(run_uat_tool)
+
+print(os.getcwd())
+print(run_uat_tool)
+print(f"Exists: {run_uat_tool.exists()}")
+
 project_file_path = sys.argv[2]
-profile = sys.argv[3]
-output_directory = sys.argv[4]
-
-engine = pathlib.Path(engine_root)
 project = pathlib.Path(project_file_path)
+
+print(project.absolute())
+print(f"Exists: {project.exists()}")
+
+# profile = sys.argv[3]
+
+# output_directory = sys.argv[4]
+output_directory = "out/"
+
+run_uat_tool = pathlib.Path(run_uat_tool)
 output_directory = pathlib.Path(output_directory)
 
 build_flags = {
@@ -32,13 +45,9 @@ build_flags = {
         "-cook",
         "-iterate",
         "-nop4",
-        "-build",
-        "-stage",
-        "-archive",
+        "-nocompile",
         "-nodebuginfo",
         "-noPCH",
-        "-prereqs",
-        "-CrashReporter",
     ],
     "kamo_linux_server": [
         "-serverconfig=Development",
@@ -57,12 +66,13 @@ build_flags = {
 }
 
 
-def build_game(engine, project, profile, output_directory):
-    run_uat = f"{engine}/Engine/Build/BatchFiles/RunUAT.bat"
+def build_game(run_uat_tool, project, profile, output_directory):
+    # run_uat = f"{engine}/Engine/Build/BatchFiles/RunUAT.bat"
+
     cmd = [
-        run_uat,
+        run_uat_tool,
         "BuildCookRun",
-        f"-project={project}",
+        f"-project={project.absolute()}",
         f"-archivedirectory={output_directory}",
     ]
 
@@ -72,6 +82,4 @@ def build_game(engine, project, profile, output_directory):
     subprocess.run(cmd)
 
 
-print(f"Engine Path: {engine.absolute()}")
-
-build_game(engine, project, profile, output_directory)
+build_game(run_uat_tool, project, "existence_windows_shipping_client", output_directory)
