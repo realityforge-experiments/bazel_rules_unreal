@@ -31,7 +31,9 @@ def load_map_impl(ctx):
         arguments=[
             "-project=" + ctx.files.project_file[0].path,
             "-run=resavepackages",
-            "-abslog=" + output_log_file.path]
+            "-abslog=" + output_log_file.path,
+            "-nullrhi",
+            "-unattend"]
     )
 
     return DefaultInfo(files=depset([output_log_file]))
