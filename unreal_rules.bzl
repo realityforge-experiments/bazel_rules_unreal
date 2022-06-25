@@ -28,7 +28,9 @@ def load_map_impl(ctx):
     ctx.actions.run(
         outputs=[output_log_file],
         executable=ctx.executable.unreal_engine_executable,
-        arguments=["-project=" + ctx.files.project_file[0].path], "-abslog="output_log_file.path]
+        arguments=[
+            "-project=" + ctx.files.project_file[0].path,
+            "-abslog=" + output_log_file.path]
     )
 
     return DefaultInfo(files=depset([output_log_file]))
