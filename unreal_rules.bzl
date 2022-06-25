@@ -30,6 +30,7 @@ def load_map_impl(ctx):
         executable=ctx.executable.unreal_engine_executable,
         arguments=[
             "-project=" + ctx.files.project_file[0].path,
+            "-run=resavepackages",
             "-abslog=" + output_log_file.path]
     )
 
