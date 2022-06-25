@@ -30,7 +30,7 @@ def load_map_impl(ctx):
         arguments=["-project=" + ctx.files.project_file[0].path]
     )
 
-    return DefaultInfo(files=depset([out]))
+    return DefaultInfo(files=depset([output_log_file]))
 
 
 build_game = rule(
