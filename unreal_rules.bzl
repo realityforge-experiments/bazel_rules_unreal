@@ -25,9 +25,10 @@ def _build_game_impl(ctx):
 def load_map_impl(ctx):
     output_log_file = ctx.actions.declare_file("output_log_file.txt")
 
-    ctx.actions.run(
+    ctx.actions.run_shell(
         outputs=[output_log_file],
-        executable=ctx.executable.unreal_engine_executable,
+        command=ctx.executable.unreal_engine_executable.path,
+        use_default_shell_env = True,
         arguments=[
             "-project=" + ctx.files.project_file[0].path,
             "-run=resavepackages",
