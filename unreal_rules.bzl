@@ -49,7 +49,7 @@ build_game = rule(
 load_map = rule( 
     implementation=load_map_impl,
     attrs={
-        "uat": attr.label(
+        "unreal_engine_executable": attr.label(
             allow_files=True,
             executable=True,
             cfg="exec"
