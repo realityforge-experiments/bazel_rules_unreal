@@ -1,7 +1,8 @@
+
 def _build_game_impl(ctx):
 
     out = ctx.actions.declare_file("out.txt")
-
+    
     ctx.actions.run(
         outputs=[out],
         executable=ctx.executable.build_tool,
@@ -11,14 +12,14 @@ def _build_game_impl(ctx):
         ],
         # use_default_shell_env=True,
     )
-    """
+    
     ctx.actions.run(
         outputs=[out],
         executable=ctx.files.uat[0],
         arguments=[],
         use_default_shell_env=True,
     )
-    """
+
     return DefaultInfo(files=depset([out]), executable=out)
 
 def load_map_impl(ctx):
@@ -46,12 +47,13 @@ build_game = rule(
 )
 
 load_map = rule( 
-    implementation=_build_game_impl,
+    implementation=load_map_impl,
     attrs={
         "uat": attr.label(
             allow_files=True,
             executable=True,
-            cfg="exec"),
+            cfg="exec"
+            ),
         "project_file": attr.label(
             allow_single_file=True,
         ),
