@@ -39,7 +39,7 @@ def load_map_impl(ctx):
             "-unattend"]
     )
     
-    return DefaultInfo(files=depset([outpuqt_log_file]))
+    return DefaultInfo(files=depset([output_log_file]))
 
 
 build_game = rule(
