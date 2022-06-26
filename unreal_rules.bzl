@@ -31,7 +31,7 @@ def load_map_impl(ctx):
         use_default_shell_env = True,
         arguments=[
             "-project=" + ctx.files.project_file[0].path,
-            "-ExecCmds=/"Automation RunTests SourceTests/""
+            "-ExecCmds=\"Automation RunTests SourceTests\""
             "-run=resavepackages",
             "-log=" + output_log_file.path,
             "-nullrhi",
