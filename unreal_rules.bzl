@@ -34,7 +34,7 @@ def load_map_impl(ctx):
             "-ExecCmds=\"Automation RunTests SourceTests\"",
             "-log=" + output_log_file.path,
             "-nullrhi",
-            "-game"
+            "-game",
             "-unattend"]
     )
     
