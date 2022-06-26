@@ -31,13 +31,15 @@ def load_map_impl(ctx):
         use_default_shell_env = True,
         arguments=[
             "-project=" + ctx.files.project_file[0].path,
+            "-ExecCmds=/"Automation RunTests SourceTests/""
             "-run=resavepackages",
-            "-abslog=" + output_log_file.path,
+            "-log=" + output_log_file.path,
             "-nullrhi",
+            "-game"
             "-unattend"]
     )
-
-    return DefaultInfo(files=depset([output_log_file]))
+    
+    return DefaultInfo(files=depset([outpuqt_log_file]))
 
 
 build_game = rule(
