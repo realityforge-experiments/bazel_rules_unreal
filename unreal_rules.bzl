@@ -5,15 +5,15 @@ def load_map_impl(ctx):
 
     ctx.actions.write(
         output=run_file,
-        content = "\"" + ctx.executable.engine_executable.path + "\" " + ctx.files.project_file[0].short_path,
-         is_executable=True)
+        content = "\"" + ctx.executable.engine_executable.path + "\" " + "%cd%/" + ctx.files.project_file[0].short_path + " -abslog=" + "%cd%/" + output_log_file.path + " -run=ResavePackages -fixupredirects -autocheckout -projectonly -unattended -testonly",
+        is_executable=True)
 
     ctx.actions.run(
         outputs=[output_log_file],
         executable=run_file,
     )
     
-    return DefaultInfo(files=depset([output_log_file, run_file]))
+    return DefaultInfo(files=depset([output_log_file]))
 
 load_map = rule( 
     implementation=load_map_impl,
