@@ -3,9 +3,10 @@ def load_map_impl(ctx):
     output_log_file = ctx.actions.declare_file("output_log_file.txt")
     run_file = ctx.actions.declare_file("run_me.bat")
 
+    engine_plus_project_path = "\"" + ctx.executable.engine_executable.path + "\" " + "%cd%/" + ctx.files.project_file[0].short_path 
     ctx.actions.write(
         output=run_file,
-        content = "\"" + ctx.executable.engine_executable.path + "\" " + "%cd%/" + ctx.files.project_file[0].short_path + " -abslog=" + "%cd%/" + output_log_file.path + " -run=ResavePackages -fixupredirects -projectonly -unattended -test",
+        content = engine_plus_project_path + " -abslog=" + "%cd%/" + output_log_file.path + " -ExecCmds=\"Automation List\"",
         is_executable=True)
 
     ctx.actions.run(
