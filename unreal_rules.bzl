@@ -6,9 +6,11 @@ def load_map_impl(ctx):
     engine_plus_project_path = "\"" + ctx.executable.engine_executable.path + "\" " + "%cd%/" + ctx.files.project_file[0].short_path 
     ctx.actions.write(
         output=run_file,
-        content = engine_plus_project_path + " -abslog=" + "%cd%/" + output_log_file.path + " -ExecCmds=\"Automation RunTests Project.Blueprints.Compile-On-Load\" -unattended -nopause -testexit=\"Automation Test Queue Empty\"",
+        content = engine_plus_project_path + " -abslog=" + "%cd%/" + output_log_file.path + " -editortest -Execcmds=\"Automation SetFilter Stress, list, Automation RunTest Project.Blueprints.Compile Blueprint\" -unattended -nopause -testexit=\"Automation Test Queue Empty\"",
         is_executable=True)
 
+    # -Execcmds=\"Automation RunFilter Stress, List, RunTests Project.Blueprints.Compile Blueprints\"
+    # Blueprints.Compile-On-Load
     # Project.Blueprints.Compile-On-Load.BP_AutoKiosk
     ctx.actions.run(
         outputs=[output_log_file],
