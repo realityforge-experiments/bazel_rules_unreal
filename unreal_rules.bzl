@@ -2,9 +2,10 @@
 def compile_blueprint_impl(ctx):
     output_log_file = ctx.actions.declare_file("output_log_file.txt")
     run_file = ctx.actions.declare_file("run_me.bat")
-    blueprint_name = ctx.files.blueprint[0].basename.replace("." + ctx.files.blueprint[0].extension,"")
 
+    blueprint_name = ctx.files.blueprint[0].basename.replace("." + ctx.files.blueprint[0].extension,"")
     engine_plus_project_path = "\"" + ctx.executable.engine_executable.path + "\" " + "%cd%/" + ctx.files.project_file[0].short_path 
+
     ctx.actions.write(
         output=run_file,
         content = engine_plus_project_path + " -abslog=" + "%cd%/" + output_log_file.path + " -editortest -Execcmds=\"Automation SetFilter Stress, Automation list, Automation RunTest Project.Blueprints.Compile Blueprints." + blueprint_name +"\"" + " -unattended -nopause -testexit=\"Automation Test Queue Empty\"",
@@ -12,6 +13,7 @@ def compile_blueprint_impl(ctx):
 
     ctx.actions.run(
         outputs=[output_log_file],
+        inputs =[ctx.files.blueprint[0]],
         executable=run_file,
     )
     
