@@ -1,23 +1,38 @@
-
 def compile_blueprint_impl(ctx):
-    output_log_file = ctx.actions.declare_file("output_log_file.txt")
-    run_file = ctx.actions.declare_file("run_me.bat")
 
+    # Get the name of the blueprint that we are processing
     blueprint_name = ctx.files.blueprint[0].basename.replace("." + ctx.files.blueprint[0].extension,"")
+
+    # Declare the output file that will contain the log 
+    output_file = ctx.actions.declare_file(blueprint_name + ".txt")
+
+    # Declare the run file which will be executed
+    file_to_run = ctx.actions.declare_file("run_compile_blueprint" + blueprint_name + ".bat")
+
+    # Path to unreal and the project file
     engine_plus_project_path = "\"" + ctx.executable.engine_executable.path + "\" " + "%cd%/" + ctx.files.project_file[0].short_path 
 
+    # The command that runs the test
+    test_command = " -editortest -Execcmds=\"Automation SetFilter Stress, Automation list, Automation RunTest Project.Blueprints.Compile Blueprints." + blueprint_name + "\""
+    
+    #UE Arguments
+    arguments = " -unattended -nosplash -nopause -nosplash -nullrhi"
+    
+    # Write the command into bat file
     ctx.actions.write(
-        output=run_file,
-        content = engine_plus_project_path + " -abslog=" + "%cd%/" + output_log_file.path + " -editortest -Execcmds=\"Automation SetFilter Stress, Automation list, Automation RunTest Project.Blueprints.Compile Blueprints." + blueprint_name +"\"" + " -unattended -nopause -testexit=\"Automation Test Queue Empty\"",
+        output=file_to_run,
+        content = engine_plus_project_path + " -abslog=" + "%cd%/" + output_file.path + test_command + arguments + " -testexit=\"Automation Test Queue Empty\"",
         is_executable=True)
 
+    # Execute the pat file and making sure that the the blueprint we passed in gets flagged as an input so that Bazel detects any changes to it
     ctx.actions.run(
-        outputs=[output_log_file],
+        outputs=[output_file],
         inputs =[ctx.files.blueprint[0]],
-        executable=run_file,
+        executable=file_to_run,
     )
     
-    return DefaultInfo(files=depset([output_log_file]))
+    # return the output file so that it can be used in other build steps
+    return DefaultInfo(files=depset([output_file]))
 
 compile_blueprint = rule( 
     implementation=compile_blueprint_impl,
@@ -32,7 +47,6 @@ compile_blueprint = rule(
         ),
         "blueprint": attr.label(
             allow_single_file=True,
-            default = "BP_GenosPlayerController"
         )
     },
 

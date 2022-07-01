@@ -9,4 +9,4 @@ exports_files([
 """
 
 
-exports_files(glob(["*/**"]))
+exports_files(["Engine/Binaries/Win64/UnrealEditor-cmd.exe"])
